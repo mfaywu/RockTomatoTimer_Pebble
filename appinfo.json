@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "M. Fay Wu",
+    "longName": "RockTomato",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "shortName": "RockTomato",
+    "uuid": "549989ee-2758-4bf0-803e-ef37f9475e6a",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
