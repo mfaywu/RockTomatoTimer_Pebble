@@ -77,8 +77,6 @@ void resume_timer() {
 static AppTimer *timer;
 
 void update_timer(void* content) {
-  app_timer_cancel(timer);
-  
   if (timer_on) {
     remaining_time -= 100;
     
@@ -110,10 +108,14 @@ void update_timer(void* content) {
 
       timer_on = false;
       vibes_double_pulse();
-      window_stack_pop(true);
+      window_stack_pop(true); // .disappear, .unload -> cancel_timer == no effect
     }
   }
   timer = app_timer_register(100, update_timer, NULL);
+}
+
+static void window_disappear(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_disappear");
 }
 
 void timer_init(void) {
@@ -126,14 +128,19 @@ void timer_init(void) {
     window_set_window_handlers(my_window, (WindowHandlers) {
       .load = window_load,
       .unload = window_unload,
+      .disappear = window_disappear,
     });    
   }
   window_stack_push(my_window, true);
-  update_timer(NULL);
+
   setup_timer();
+  if (timer == NULL) {
+    update_timer(NULL);
+  }
 }
 
 void window_load(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_load");
   //Layer *root_layer = window_get_root_layer(window); //TODO: Not sure if I need this
   
   /////////////////DELETE THIS CODE
@@ -204,7 +211,9 @@ void window_load(Window *window) {
 }
 
 void window_unload(Window *window) {
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "window_unload");
   app_timer_cancel(timer);
+  timer = NULL;
  // text_layer_destroy(text_layer);
   text_layer_destroy(timer_layer);
   

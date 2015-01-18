@@ -56,7 +56,8 @@ void select_click_callback (MenuLayer *menu_layer, MenuIndex *cell_index, void *
 }
 
 void window_load1 (Window *window){
-  menu_layer = menu_layer_create(GRect(0, 0, 144, 168 - 16));
+  GRect bounds = layer_get_bounds(window_get_root_layer(window));
+  menu_layer = menu_layer_create(bounds);
   menu_layer_set_click_config_onto_window(menu_layer, window);
   MenuLayerCallbacks callbacks = {
     .draw_row = (MenuLayerDrawRowCallback) draw_row_callback,
