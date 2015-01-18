@@ -14,3 +14,5 @@ void timer_init(void);
 void handle_deinit(void);
 void window_load(Window *window);
 void window_unload(Window *window);
+
+void pass_variables(int poms_remaining, int poms_target, char* task_name);

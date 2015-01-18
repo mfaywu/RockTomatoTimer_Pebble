@@ -7,6 +7,10 @@ Window *my_window;
 TextLayer *work_break_textlayer;
 TextLayer *timer_layer;
 
+static int poms_remain;
+static int poms_targ;
+static char* name_of_task;
+
 //UI generated code
 static GFont s_res_bitham_34_medium_numbers;
 static GFont s_res_gothic_14;
@@ -173,7 +177,7 @@ void window_load(Window *window) {
   task_textlayer = text_layer_create(GRect(6, 7, 131, 32));
   text_layer_set_background_color(task_textlayer, GColorBlack);
   text_layer_set_text_color(task_textlayer, GColorWhite);
-  text_layer_set_text(task_textlayer, "Study CS 131");
+  text_layer_set_text(task_textlayer, name_of_task);
   text_layer_set_font(task_textlayer, s_res_gothic_14);
   layer_add_child(window_get_root_layer(my_window), (Layer *)task_textlayer);
   
@@ -199,7 +203,10 @@ void window_load(Window *window) {
   poms_num_textlayer = text_layer_create(GRect(94, 122, 24, 20));
   text_layer_set_background_color(poms_num_textlayer, GColorBlack);
   text_layer_set_text_color(poms_num_textlayer, GColorWhite);
-  text_layer_set_text(poms_num_textlayer, "9");
+  char* poms_nums = "0/0";
+
+   snprintf(poms_nums, 6, "%01d/%01d", poms_remain, poms_targ);
+  text_layer_set_text(poms_num_textlayer, poms_nums); 
   text_layer_set_font(poms_num_textlayer, s_res_gothic_14);
   layer_add_child(window_get_root_layer(my_window), (Layer *)poms_num_textlayer);
   
@@ -225,6 +232,12 @@ void window_unload(Window *window) {
   bitmap_layer_destroy(play_pause_img);
   gbitmap_destroy(s_res_play_image);
   gbitmap_destroy(s_res_pause_image);
+}
+
+void pass_variables(int poms_remaining, int poms_target, char* task_name) {
+  poms_remain = poms_remaining;
+  poms_targ = poms_target;
+  name_of_task = task_name; //MESSING THE POINTER UP TODO
 }
 
 

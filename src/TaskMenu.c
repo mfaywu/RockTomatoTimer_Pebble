@@ -1,14 +1,19 @@
 #include <pebble.h>
 #include "TaskMenu.h"
 #include "Timer.h"
-
+#include "comm.h"
   
 Window *window;
 MenuLayer *menu_layer;
 char str1[] = "Noay";
 
 void draw_row_callback (GContext *ctx, Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
+  //BASE ON WHICH CASE, SET TASK STRING AND POMS_LEFT and POMS_REMAINING TODO: FOR FAY
     // Which row is it?
+  
+  task_t* temp_task = get_task(cell_index->row);
+  menu_cell_basic_draw(ctx, cell_layer, temp_task->name, "Completed: ", NULL); //TODO correct the "Completed: "
+  /*
     switch (cell_index->row) {
     case 0:
         menu_cell_basic_draw(ctx, cell_layer, str1, "is good at hacking pebble watches for fun", NULL);
@@ -31,17 +36,22 @@ void draw_row_callback (GContext *ctx, Layer *cell_layer, MenuIndex *cell_index,
     case 6:
         menu_cell_basic_draw(ctx, cell_layer, "7. Melon", "Only three left!", NULL);
         break;
-    }
+    }*/
 }
 
 uint16_t num_rows_callback (MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
-  return 7;
+  return get_num_tasks(); //returns how many rows aka how many times to run draw_rows_callback
 }
 
 
 void select_click_callback (MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
-/*  int which = cell_index->row;
-  uint32_t segments[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+  int which = cell_index->row;
+  
+  char* task_name = get_task(which)->name;
+  int poms_target = get_task(which)->nTarget;
+  int poms_remaining = poms_target - get_task(which)->nCompleted;
+  
+ /* uint32_t segments[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   for (int i = 0; i <= which; ++i) {
     segments[2*i] = 200;
     segments[(2*i)+1] = 100;
@@ -52,6 +62,9 @@ void select_click_callback (MenuLayer *menu_layer, MenuIndex *cell_index, void *
   };
   vibes_enqueue_custom_pattern(pattern);
 */
+  
+  //Keep here
+  pass_variables(poms_remaining, poms_target, task_name);
   timer_init();
 }
 
@@ -84,4 +97,5 @@ void init_menu() {
 
 void deinit_menu() {
   window_destroy(window);
+  //free(tasks); remove comments when you have actual variable holding this
 }
