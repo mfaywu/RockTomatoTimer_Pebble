@@ -7,7 +7,18 @@
     "longName": "RockTomatoTimer_Pebble",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/pause_button_png.png",
+                "name": "pause_image",
+                "type": "png"
+            },
+            {
+                "file": "images/play_button_png.png",
+                "name": "play_image",
+                "type": "png"
+            }
+        ]
     },
     "shortName": "RockTomatoTimer_Pebble",
     "uuid": "6c86cc1e-4bb1-46ee-8947-4bd45a27e113",

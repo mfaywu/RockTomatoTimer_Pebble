@@ -4,8 +4,19 @@
 
   
 Window *my_window;
-TextLayer *text_layer;
+TextLayer *work_break_textlayer;
 TextLayer *timer_layer;
+
+//UI generated code
+static GFont s_res_bitham_34_medium_numbers;
+static GFont s_res_gothic_14;
+static GFont s_res_roboto_condensed_21;
+static GBitmap *s_res_play_image;
+static TextLayer *task_textlayer;
+static TextLayer *poms_left_textlayer;
+//static TextLayer *work_break_textlayer;
+static TextLayer *poms_num_textlayer;
+static BitmapLayer *play_pause_img;
 
 //static AppTimer* timer = NULL;
 double remaining_time = 0;
@@ -41,19 +52,19 @@ void click_config_provider(Window *window) {
 
 }
 void setup_timer() {
-  text_layer_set_text(text_layer, "setup");
+  //text_layer_set_text(work_break_textlayer, "Start");
   remaining_time = (brk_duration + work_duration);
   timer_on = true;
   is_work = true;
 }
 
 void pause_timer() {
-  text_layer_set_text(text_layer, "Pause");
+  text_layer_set_text(work_break_textlayer, "Pause");
   timer_on = false;
 }
 
 void resume_timer() {
-  text_layer_set_text(text_layer, "Resume");
+  //text_layer_set_text(work_break_textlayer, "Resume");
   timer_on = true;
 }
   
@@ -72,7 +83,7 @@ void update_timer(void* content) {
   
     if(is_work == true) {
       snprintf(timeText, 6, "%02d:%02d", minutes, seconds - 5); //CHANGE THIS 
-      text_layer_set_text(text_layer, "run timer");
+      text_layer_set_text(work_break_textlayer, "Work");
     }
     if(!is_work) {
       snprintf(timeText, 6, "%02d:%02d", minutes, seconds);
@@ -81,12 +92,12 @@ void update_timer(void* content) {
     /////////////
     
     if (remaining_time == brk_duration) {
-      text_layer_set_text(text_layer, "break time");
+      text_layer_set_text(work_break_textlayer, "Break");
       vibes_double_pulse();
       is_work = false;
     }
     if(remaining_time <= 0) {
-      text_layer_set_text(text_layer, "end timer");
+      text_layer_set_text(work_break_textlayer, "Done!");
       timer_on = false;
       vibes_double_pulse();
       window_stack_pop(true);
@@ -113,22 +124,86 @@ void timer_init(void) {
 }
 
 void window_load(Window *window) {
-  Layer *root_layer = window_get_root_layer(window);
+  //Layer *root_layer = window_get_root_layer(window); //TODO: Not sure if I need this
   
-  text_layer = text_layer_create(GRect(5, 25, 105, 35));
- // text_layer_set_text_color(text_layer, GColorWhite);
-  text_layer_set_text(text_layer, "RockTomatoe");
-  layer_add_child(root_layer, (Layer*)text_layer);
+  /////////////////DELETE THIS CODE
+  //text_layer = text_layer_create(GRect(5, 25, 105, 35));
+  //text_layer_set_text(text_layer, "RockTomatoe");
+  //layer_add_child(root_layer, (Layer*)text_layer);
+  /////////////////DELETE THIS CODE
   
-  timer_layer = text_layer_create(GRect(50, 100, 50, 35));
+  //auto-generated code
+  //s_window = window_create();
+  window_set_background_color(my_window, GColorBlack);
+  window_set_fullscreen(my_window, false);
+  
+  s_res_bitham_34_medium_numbers = fonts_get_system_font(FONT_KEY_BITHAM_34_MEDIUM_NUMBERS);
+  s_res_gothic_14 = fonts_get_system_font(FONT_KEY_GOTHIC_14);
+  s_res_roboto_condensed_21 = fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21);
+  s_res_play_image = gbitmap_create_with_resource(RESOURCE_ID_play_image);
+  // timer_layer
+  timer_layer = text_layer_create(GRect(18, 75, 100, 49));
+  text_layer_set_background_color(timer_layer, GColorBlack);
+  text_layer_set_text_color(timer_layer, GColorWhite);
   text_layer_set_text(timer_layer, "25:00");
-  layer_add_child(root_layer, (Layer*)timer_layer);
+  text_layer_set_text_alignment(timer_layer, GTextAlignmentCenter);
+  text_layer_set_font(timer_layer, s_res_bitham_34_medium_numbers);
+  layer_add_child(window_get_root_layer(my_window), (Layer *)timer_layer);
+  
+  //TODO: Need to put in
+  // task_textlayer
+  task_textlayer = text_layer_create(GRect(6, 7, 131, 32));
+  text_layer_set_background_color(task_textlayer, GColorBlack);
+  text_layer_set_text_color(task_textlayer, GColorWhite);
+  text_layer_set_text(task_textlayer, "Study CS 131");
+  text_layer_set_font(task_textlayer, s_res_gothic_14);
+  layer_add_child(window_get_root_layer(my_window), (Layer *)task_textlayer);
+  
+  // poms_left_textlayer
+  poms_left_textlayer = text_layer_create(GRect(34, 122, 56, 20));
+  text_layer_set_background_color(poms_left_textlayer, GColorBlack);
+  text_layer_set_text_color(poms_left_textlayer, GColorWhite);
+  text_layer_set_text(poms_left_textlayer, "Poms Left:");
+  text_layer_set_font(poms_left_textlayer, s_res_gothic_14);
+  layer_add_child(window_get_root_layer(my_window), (Layer *)poms_left_textlayer);
+  
+  // work_break_textlayer
+  work_break_textlayer = text_layer_create(GRect(17, 38, 100, 30));
+  text_layer_set_background_color(work_break_textlayer, GColorBlack);
+  text_layer_set_text_color(work_break_textlayer, GColorWhite);
+  //text_layer_set_text(work_break_textlayer, "Work");
+  text_layer_set_text_alignment(work_break_textlayer, GTextAlignmentCenter);
+  text_layer_set_font(work_break_textlayer, s_res_roboto_condensed_21);
+  layer_add_child(window_get_root_layer(my_window), (Layer *)work_break_textlayer);
+  
+  //TODO: Need to fit in
+  // poms_num_textlayer
+  poms_num_textlayer = text_layer_create(GRect(94, 122, 24, 20));
+  text_layer_set_background_color(poms_num_textlayer, GColorBlack);
+  text_layer_set_text_color(poms_num_textlayer, GColorWhite);
+  text_layer_set_text(poms_num_textlayer, "9");
+  text_layer_set_font(poms_num_textlayer, s_res_gothic_14);
+  layer_add_child(window_get_root_layer(my_window), (Layer *)poms_num_textlayer);
+  
+  //TODO: Need to fit in
+  // play_pause_img
+  play_pause_img = bitmap_layer_create(GRect(123, 64, 20, 20));
+  bitmap_layer_set_bitmap(play_pause_img, s_res_play_image);
+  layer_add_child(window_get_root_layer(my_window), (Layer *)play_pause_img);
 }
 
 void window_unload(Window *window) {
   app_timer_cancel(timer);
-  text_layer_destroy(text_layer);
+ // text_layer_destroy(text_layer);
   text_layer_destroy(timer_layer);
+  
+  //text_layer_destroy(time_display_textlayer);
+  text_layer_destroy(task_textlayer);
+  text_layer_destroy(poms_left_textlayer);
+  text_layer_destroy(work_break_textlayer);
+  text_layer_destroy(poms_num_textlayer);
+  bitmap_layer_destroy(play_pause_img);
+  gbitmap_destroy(s_res_play_image);
 }
 
 
