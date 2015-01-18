@@ -12,6 +12,7 @@ static GFont s_res_bitham_34_medium_numbers;
 static GFont s_res_gothic_14;
 static GFont s_res_roboto_condensed_21;
 static GBitmap *s_res_play_image;
+static GBitmap *s_res_pause_image;
 static TextLayer *task_textlayer;
 static TextLayer *poms_left_textlayer;
 //static TextLayer *work_break_textlayer;
@@ -58,8 +59,13 @@ void setup_timer() {
   is_work = true;
 }
 
+static void update_feedback(GBitmap *bitmap, char *text) {
+  text_layer_set_text(work_break_textlayer, text);
+  bitmap_layer_set_bitmap(play_pause_img, bitmap);
+}
+
 void pause_timer() {
-  text_layer_set_text(work_break_textlayer, "Pause");
+  update_feedback(s_res_play_image, "Pause");
   timer_on = false;
 }
 
@@ -71,6 +77,8 @@ void resume_timer() {
 static AppTimer *timer;
 
 void update_timer(void* content) {
+  app_timer_cancel(timer);
+  
   if (timer_on) {
     remaining_time -= 100;
     
@@ -83,7 +91,7 @@ void update_timer(void* content) {
   
     if(is_work == true) {
       snprintf(timeText, 6, "%02d:%02d", minutes, seconds - 5); //CHANGE THIS 
-      text_layer_set_text(work_break_textlayer, "Work");
+      update_feedback(s_res_pause_image, "Work");
     }
     if(!is_work) {
       snprintf(timeText, 6, "%02d:%02d", minutes, seconds);
@@ -92,12 +100,14 @@ void update_timer(void* content) {
     /////////////
     
     if (remaining_time == brk_duration) {
-      text_layer_set_text(work_break_textlayer, "Break");
+      update_feedback(s_res_pause_image, "Break");
+
       vibes_double_pulse();
       is_work = false;
     }
     if(remaining_time <= 0) {
-      text_layer_set_text(work_break_textlayer, "Done!");
+      update_feedback(s_res_play_image, "Done!");
+
       timer_on = false;
       vibes_double_pulse();
       window_stack_pop(true);
@@ -141,16 +151,17 @@ void window_load(Window *window) {
   s_res_gothic_14 = fonts_get_system_font(FONT_KEY_GOTHIC_14);
   s_res_roboto_condensed_21 = fonts_get_system_font(FONT_KEY_ROBOTO_CONDENSED_21);
   s_res_play_image = gbitmap_create_with_resource(RESOURCE_ID_play_image);
+  s_res_pause_image = gbitmap_create_with_resource(RESOURCE_ID_pause_image);
   // timer_layer
   timer_layer = text_layer_create(GRect(18, 75, 100, 49));
   text_layer_set_background_color(timer_layer, GColorBlack);
   text_layer_set_text_color(timer_layer, GColorWhite);
   text_layer_set_text(timer_layer, "25:00");
-  text_layer_set_text_alignment(timer_layer, GTextAlignmentCenter);
+  text_layer_set_text_alignment(timer_layer, GTextAlignmentLeft);
   text_layer_set_font(timer_layer, s_res_bitham_34_medium_numbers);
   layer_add_child(window_get_root_layer(my_window), (Layer *)timer_layer);
   
-  //TODO: Need to put in
+  //TODO: Need to put in //CURRENTLY STATIC NEED TO MAKE DYNAMIC
   // task_textlayer
   task_textlayer = text_layer_create(GRect(6, 7, 131, 32));
   text_layer_set_background_color(task_textlayer, GColorBlack);
@@ -176,8 +187,8 @@ void window_load(Window *window) {
   text_layer_set_font(work_break_textlayer, s_res_roboto_condensed_21);
   layer_add_child(window_get_root_layer(my_window), (Layer *)work_break_textlayer);
   
-  //TODO: Need to fit in
-  // poms_num_textlayer
+  //TODO: Need to fit in //CURRENTLY STATIC - HOW TO GET IT DYNAMIC
+  // poms_num_textlayer 
   poms_num_textlayer = text_layer_create(GRect(94, 122, 24, 20));
   text_layer_set_background_color(poms_num_textlayer, GColorBlack);
   text_layer_set_text_color(poms_num_textlayer, GColorWhite);
@@ -185,7 +196,7 @@ void window_load(Window *window) {
   text_layer_set_font(poms_num_textlayer, s_res_gothic_14);
   layer_add_child(window_get_root_layer(my_window), (Layer *)poms_num_textlayer);
   
-  //TODO: Need to fit in
+  //TODO: Need to fit in ASK: What's the best way to change the image without reloading every frame?
   // play_pause_img
   play_pause_img = bitmap_layer_create(GRect(123, 64, 20, 20));
   bitmap_layer_set_bitmap(play_pause_img, s_res_play_image);
@@ -204,6 +215,7 @@ void window_unload(Window *window) {
   text_layer_destroy(poms_num_textlayer);
   bitmap_layer_destroy(play_pause_img);
   gbitmap_destroy(s_res_play_image);
+  gbitmap_destroy(s_res_pause_image);
 }
 
 
