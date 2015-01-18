@@ -3,14 +3,14 @@
     "capabilities": [
         ""
     ],
-    "companyName": "M. Fay Wu",
-    "longName": "RockTomato",
+    "companyName": "noahmacca@gmail.com",
+    "longName": "RockTomatoTimer_Pebble",
     "projectType": "native",
     "resources": {
         "media": []
     },
-    "shortName": "RockTomato",
-    "uuid": "549989ee-2758-4bf0-803e-ef37f9475e6a",
+    "shortName": "RockTomatoTimer_Pebble",
+    "uuid": "6c86cc1e-4bb1-46ee-8947-4bd45a27e113",
     "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {
