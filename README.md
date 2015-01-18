@@ -1,4 +1,5 @@
-#RockTomatoTimer_Pebble
+#RockTomato 
+##Pomodoro Timer on the Pebble Watch
 PennApps hackathon in January 2015. 
 Members: Noah MacCallum, Akshay Bakshi, M. Fay Wu, Lowell Bander
 
