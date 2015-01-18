@@ -1,4 +1,4 @@
-#include <pebble.h>
+/*#include <pebble.h>
 #include "comm.h"
 
 task_t** tasks = calloc(5,sizeof(task_t));
@@ -50,4 +50,4 @@ task_t* get_task(int index) { //dummy function
 
 int get_num_tasks() {
   return 5;
-}
+}*/

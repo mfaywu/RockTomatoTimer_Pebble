@@ -203,7 +203,7 @@ void window_load(Window *window) {
   poms_num_textlayer = text_layer_create(GRect(94, 122, 24, 20));
   text_layer_set_background_color(poms_num_textlayer, GColorBlack);
   text_layer_set_text_color(poms_num_textlayer, GColorWhite);
-  char* poms_nums = "0/0";
+  char* poms_nums = "3/4";
 
    snprintf(poms_nums, 6, "%01d/%01d", poms_remain, poms_targ);
   text_layer_set_text(poms_num_textlayer, poms_nums); 

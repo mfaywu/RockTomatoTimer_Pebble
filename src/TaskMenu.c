@@ -5,51 +5,61 @@
   
 Window *window;
 MenuLayer *menu_layer;
-char str1[] = "Noay";
+char str1[] = "Buy milk";
+
+/*int zero_poms = 0;
+int one_poms = 0;
+int two_poms = 0;
+int three_poms = 0;
+int four_poms = 0;
+int five_poms = 0;
+int six_poms = 0;*/
 
 void draw_row_callback (GContext *ctx, Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   //BASE ON WHICH CASE, SET TASK STRING AND POMS_LEFT and POMS_REMAINING TODO: FOR FAY
     // Which row is it?
   
-  task_t* temp_task = get_task(cell_index->row);
-  menu_cell_basic_draw(ctx, cell_layer, temp_task->name, "Completed: ", NULL); //TODO correct the "Completed: "
-  /*
+ // task_t* temp_task = get_task(cell_index->row);
+  //menu_cell_basic_draw(ctx, cell_layer, temp_task->name, "Completed: ", NULL); //TODO correct the "Completed: "
+  
     switch (cell_index->row) {
     case 0:
-        menu_cell_basic_draw(ctx, cell_layer, str1, "is good at hacking pebble watches for fun", NULL);
+        //static char complete[] = "Completed: ";
+        //snprintf(complete, 17, "Completed: %01 / 2", zero_poms);
+        menu_cell_basic_draw(ctx, cell_layer, str1, "Completed: 1 / 2", NULL);
         break;
     case 1:
-        menu_cell_basic_draw(ctx, cell_layer, "2. Orange", "Peel first!", NULL);
+        menu_cell_basic_draw(ctx, cell_layer, "Read the WSJ", "Completed: 3 / 4", NULL);
         break;
     case 2:
-        menu_cell_basic_draw(ctx, cell_layer, "3. Pear", "Teardrop shaped!", NULL);
+        menu_cell_basic_draw(ctx, cell_layer, "Read book", "Completed: 1 / 5", NULL);
         break;
     case 3:
-        menu_cell_basic_draw(ctx, cell_layer, "4. Banana", "Can be a gun!", NULL);
+        menu_cell_basic_draw(ctx, cell_layer, "Send emails", "Completed: 2 / 3", NULL);
         break;
     case 4:
-        menu_cell_basic_draw(ctx, cell_layer, "5. Tomato", "Extremely versatile!", NULL);
+        menu_cell_basic_draw(ctx, cell_layer, "Study algorithms", "Completed: 5 / 7", NULL);
         break;
     case 5:
-        menu_cell_basic_draw(ctx, cell_layer, "6. Grape", "Bunches of 'em!", NULL);
+        menu_cell_basic_draw(ctx, cell_layer, "Walk the dog", "Completed: 0 / 1", NULL);
         break;
     case 6:
-        menu_cell_basic_draw(ctx, cell_layer, "7. Melon", "Only three left!", NULL);
+        menu_cell_basic_draw(ctx, cell_layer, "Finish photonics homework", "Completed: 1 / 7", NULL);
         break;
-    }*/
+    }
 }
 
 uint16_t num_rows_callback (MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
-  return get_num_tasks(); //returns how many rows aka how many times to run draw_rows_callback
+  return 7; //get_num_tasks(); //returns how many rows aka how many times to run draw_rows_callback
 }
 
 
 void select_click_callback (MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
   int which = cell_index->row;
   
-  char* task_name = get_task(which)->name;
-  int poms_target = get_task(which)->nTarget;
-  int poms_remaining = poms_target - get_task(which)->nCompleted;
+  //char* task_name = get_task(which)->name;
+  //int poms_target = get_task(which)->nTarget;
+  //int poms_remaining = poms_target - get_task(which)->nCompleted;
   
  /* uint32_t segments[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
   for (int i = 0; i <= which; ++i) {
@@ -63,7 +73,50 @@ void select_click_callback (MenuLayer *menu_layer, MenuIndex *cell_index, void *
   vibes_enqueue_custom_pattern(pattern);
 */
   
-  //Keep here
+  switch(which) {
+    case 0:
+        poms_remaining = 1;
+      poms_target = 2;
+    task_name = "Buy milk";
+        break;
+    case 1:
+    poms_remaining = 1;
+    poms_target = 4;
+    task_name = "Read the WSJ";
+       // menu_cell_basic_draw(ctx, cell_layer, "Read the WSJ", "Completed: 3 / 4", NULL);
+        break;
+    case 2:
+    poms_remaining = 4;
+    poms_target = 5;
+    task_name = "Read book";
+        //menu_cell_basic_draw(ctx, cell_layer, "Read book", "Completed: 1 / 5", NULL);
+        break;
+    case 3:
+    poms_remaining = 1;
+    poms_target = 3;
+    task_name = "Send emails";
+        //menu_cell_basic_draw(ctx, cell_layer, "Send emails", "Completed: 2 / 3", NULL);
+        break;
+    case 4:
+    poms_remaining = 2;
+    poms_target = 7;
+    task_name = "Study algorithms";
+        //menu_cell_basic_draw(ctx, cell_layer, "Study algorithms", "Completed: 5 / 7", NULL);
+        break;
+    case 5:
+    poms_remaining = 1;
+    poms_target = 1;
+    task_name = "Walk the dog";
+        //menu_cell_basic_draw(ctx, cell_layer, "Walk the dog", "Completed: 0 / 1", NULL);
+        break;
+    case 6:
+    poms_remaining = 6;
+    poms_target = 7;
+    task_name = "Finish photonics homework";
+        //menu_cell_basic_draw(ctx, cell_layer, "Finish photonics homework", "Completed: 1 / 7", NULL);
+        break;
+    }
+  }
   pass_variables(poms_remaining, poms_target, task_name);
   timer_init();
 }

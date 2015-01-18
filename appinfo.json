@@ -9,13 +9,13 @@
     "resources": {
         "media": [
             {
-                "file": "images/pause_button_png.png",
-                "name": "pause_image",
+                "file": "images/play_button_png.png",
+                "name": "play_image",
                 "type": "png"
             },
             {
-                "file": "images/play_button_png.png",
-                "name": "play_image",
+                "file": "images/pause_button_png.png",
+                "name": "pause_image",
                 "type": "png"
             }
         ]
